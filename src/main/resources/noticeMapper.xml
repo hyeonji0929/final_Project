@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.two.main.notice.NoticeMapper">
+<select id="noticeAll" resultType="com.two.main.notice.Notice">
+select * from notice
+</select>
+
+<insert id="regNotice" parameterType="com.two.main.notice.Notice">
+insert into notice values(notice_seq.nextval, #{n_id}, #{n_title}, sysdate, #{n_content}, #{n_photo})
+</insert>
+</mapper>
