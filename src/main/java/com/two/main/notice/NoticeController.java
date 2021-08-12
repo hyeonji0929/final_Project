@@ -49,7 +49,43 @@ public class NoticeController {
 	public String noticeDetail(Notice n, HttpServletRequest req) {
 		
 		mdao.loginCheck(req);
+		ndao.getNotice(n, req);
 		req.setAttribute("contentPage", "notice/noticeDetail.jsp");
+		return "index";
+	}
+	
+	@RequestMapping(value = "/notice.del", method = RequestMethod.GET)
+	public String noticeDel(Notice n, HttpServletRequest req) {
+		
+		if(mdao.loginCheck(req)) {
+			ndao.delNotice(n, req);
+			ndao.noticeAll(req);
+			req.setAttribute("contentPage", "notice/notice.jsp");
+		} else {
+			req.setAttribute("contentPage", "home.jsp");
+		}
+		return "index";
+	}
+	
+	@RequestMapping(value = "/goUpdateNotice", method = RequestMethod.GET)
+	public String noticeUpdateGo(Notice n, HttpServletRequest req) {
+		if(mdao.loginCheck(req)) {
+			ndao.getNotice(n, req);
+			req.setAttribute("contentPage", "notice/noticeUpdate.jsp");
+		} else {
+			ndao.noticeAll(req);
+			req.setAttribute("contentPage", "notice/notice.jsp");
+		}
+		return "index";
+	}
+	
+	@RequestMapping(value = "/notice.update.do", method = RequestMethod.POST)
+	public String noticeUpdate(HttpServletRequest req) {
+		
+		if(mdao.loginCheck(req)) {
+			ndao.updateNotice(req);
+		} 
+			req.setAttribute("contentPage", "notice/noticeDetail.jsp");
 		return "index";
 	}
 

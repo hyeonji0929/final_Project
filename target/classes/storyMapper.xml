@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.two.main.story.StoryMapper">
+<select id="storyAll" resultType="com.two.main.story.Story">
+select * from story
+</select>
+
+<select id="getStory" resultType="com.two.main.story.Story">
+select * from story where s_no = #{s_no}
+</select>
+
+<insert id="regStory" parameterType="com.two.main.story.Story">
+insert into story values(story_seq.nextval, #{s_id}, #{s_title}, sysdate, #{s_content}, #{s_photo})
+</insert>
+
+<delete id="delStory" parameterType="com.two.main.story.Story">
+delete story where s_no = #{s_no}
+</delete>
+
+<update id="updateStory" parameterType="com.two.main.story.Story">
+update story set s_title = #{s_title}, s_content = #{s_content}, s_photo = #{s_photo} where s_no = #{s_no}
+</update>
+</mapper>

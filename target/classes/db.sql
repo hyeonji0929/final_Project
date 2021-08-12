@@ -26,7 +26,6 @@ n_photo varchar2 (10char),
 	foreign key(n_id) references member(m_id)
 	on delete cascade
 );
-
 create sequence notice_seq;
 insert into NOTICE values(notice_seq.nextval, 'hj', 'test', sysdate, 'test', 'm.jpg');
 insert into NOTICE values(notice_seq.nextval, 'hj', '1111111111', sysdate, '11111111', 'm.jpg');
@@ -34,3 +33,35 @@ select * from NOTICE;
 
 drop table notice cascade constraint purge;
 drop sequence notice_seq;
+
+-- 스토리
+create table story(
+s_no number(10) primary key not null,
+s_id varchar2 (10char) not null,
+s_title varchar2 (100char) not null,
+s_date date not null,
+s_content varchar2 (1000char) not null,
+s_photo varchar2 (100char),
+	constraint story
+	foreign key(s_id) references member(m_id)
+	on delete cascade
+);
+create sequence story_seq;
+insert into story values(story_seq.nextval, 'hj', 'test', sysdate, 'testttttttttttt',  'm.jpg');
+select * from STORY;
+
+drop table story cascade constraint purge;
+drop sequence story_seq;
+
+-- 좋아요
+create table good(
+g_no number(10) primary key not null,
+g_good varchar2 (10char),
+	constraint good
+	foreign key(g_no) references story(s_no)
+	on delete cascade
+);
+
+create sequence good_seq;
+select * from good;
+

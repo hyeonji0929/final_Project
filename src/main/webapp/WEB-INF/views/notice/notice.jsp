@@ -15,15 +15,13 @@
 		<tr>
 			<th>글번호</th>
 			<th>제목</th>
-			<th>작성자</th>
 			<th>작성일</th>
 		</tr>
 		<c:forEach var="list" items="${notices }">
 			<tr>
-				<td><a href="notice.detail'">${list.n_no }</a></td>
-				<td>${list.n_title }</td>
-				<td>${list.n_id }</td>
-				<td><fmt:formatDate value="${list.n_date }" type="date" dateStyle="short" /></td>
+				<td>${list.n_no }</td>
+				<td><a href="notice.detail?n_no=${list.n_no}">${list.n_title }</a></td>
+				<td><fmt:formatDate value="${list.n_date }" type="date" dateStyle="short"/></td>
 			</tr>
 		</c:forEach>
 	</table>

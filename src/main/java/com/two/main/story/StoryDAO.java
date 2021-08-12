@@ -1,9 +1,8 @@
-package com.two.main.notice;
+package com.two.main.story;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,19 +14,22 @@ import org.springframework.stereotype.Service;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.two.main.member.Member;
+import com.two.main.notice.Notice;
+import com.two.main.notice.NoticeMapper;
 
 @Service
-public class NoticeDAO {
+public class StoryDAO {
 
 	@Autowired
 	private SqlSession ss;
-
-	public void noticeAll(HttpServletRequest req) {
-		List<Notice> notices = ss.getMapper(NoticeMapper.class).noticeAll();
-		req.setAttribute("notices", notices);
+	
+	public void storyAll(HttpServletRequest req) {
+		List<Story> stories = ss.getMapper(StoryMapper.class).storyAll();
+		req.setAttribute("stories", stories);
 	}
 
-	public void regNotice(Notice n, HttpServletRequest req) {
+	public void regStory(Story s, HttpServletRequest req) {
+		
 		MultipartRequest mr = null;
 		String path = req.getSession().getServletContext().getRealPath("resources/img");
 
@@ -37,16 +39,17 @@ public class NoticeDAO {
 			
 			Member m = (Member) req.getSession().getAttribute("loginMember");
 			
-			String n_title = mr.getParameter("n_title");
-			String n_content = mr.getParameter("n_content");
-			String n_photo = mr.getFilesystemName("n_photo");
+			String s_title = mr.getParameter("s_title");
+			String s_content = mr.getParameter("s_content");
+			String s_photo = mr.getFilesystemName("s_photo");
+			System.err.println(s_photo);
 			
-			n.setN_id(m.getM_id());
-			n.setN_title(n_title);
-			n.setN_content(n_content);
-			n.setN_photo(n_photo);
+			s.setS_id(m.getM_id());
+			s.setS_title(s_title);
+			s.setS_content(s_content);
+			s.setS_photo(s_photo);
 			
-			if(ss.getMapper(NoticeMapper.class).regNotice(n) == 1) {
+			if(ss.getMapper(StoryMapper.class).regStory(s) == 1) {
 				req.setAttribute("r", "등록 성공");
 			} else {
 				req.setAttribute("r", "등록 실패");
@@ -57,46 +60,50 @@ public class NoticeDAO {
 			e.printStackTrace();
 		}
 
+		
+		
 	}
 
-	public Notice getNotice(Notice n, HttpServletRequest req) {
-		Notice notice = ss.getMapper(NoticeMapper.class).getNotice(n);
-		req.setAttribute("nt", notice);
-		return notice;
+	public Story getStory(Story s, HttpServletRequest req) {
+		Story story = ss.getMapper(StoryMapper.class).getStory(s);
+		req.setAttribute("st", story);
+		return story;
+		
 	}
 
-	public void delNotice(Notice n, HttpServletRequest req) {
-		ss.getMapper(NoticeMapper.class).delNotice(n);
+	public void delStory(Story s, HttpServletRequest req) {
+		ss.getMapper(StoryMapper.class).delStory(s);
+		
 	}
 
 	public void updateNotice(HttpServletRequest req) {
 		String path = req.getSession().getServletContext().getRealPath("resources/img");
 		System.out.println(path);
 		MultipartRequest mr = null;
-		Notice n = new Notice();
+		Story s = new Story();
 		
 		try {
 			mr = new MultipartRequest(req, path, 31457280, "utf-8", new DefaultFileRenamePolicy());
-			BigDecimal n_no = new BigDecimal(mr.getParameter("n_no"));
-			n.setN_no(n_no);
-			n = getNotice(n, req);
-			String oldFile = n.getN_photo();
+			BigDecimal s_no = new BigDecimal(mr.getParameter("s_no"));
+			s.setS_no(s_no);
+			s = getStory(s, req);
+			String oldFile = s.getS_photo();
 			
-			String newFile = mr.getFilesystemName("n_photo");
+			String newFile = mr.getFilesystemName("s_photo");
 			
-			String n_title = mr.getParameter("n_title");
-			String n_content = mr.getParameter("n_content");
+			String s_title = mr.getParameter("s_title");
+			String s_content = mr.getParameter("s_content");
 			
 			if (newFile == null) {
 				newFile = oldFile;
 			} else { 
 			}
 			
-			n.setN_title(n_title);
-			n.setN_content(n_content);
-			n.setN_photo(newFile);
+			s.setS_title(s_title);
+			s.setS_content(s_content);
+			s.setS_photo(newFile);
 			
-			if(ss.getMapper(NoticeMapper.class).updateNotice(n) == 1) {
+			if(ss.getMapper(StoryMapper.class).updateStory(s) == 1) {
 				req.setAttribute("r", "수정 성공");
 				
 				if(!oldFile.equals(newFile)) {
@@ -115,6 +122,7 @@ public class NoticeDAO {
 			e.printStackTrace();
 			req.setAttribute("r", "수정 실패");
 		}
+		
 		
 	}
 

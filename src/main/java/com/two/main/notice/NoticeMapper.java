@@ -9,4 +9,10 @@ public interface NoticeMapper {
 
 	public int regNotice(Notice n);
 
+	public Notice getNotice(Notice n);
+
+	public int delNotice(Notice n);
+
+	public int updateNotice(Notice n);
+
 }
